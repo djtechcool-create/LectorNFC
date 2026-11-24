@@ -91,7 +91,7 @@ class EmvReader(private val iso: IsoDep, private val log: (String) -> Unit) {
         // GET PROCESSING OPTIONS con los datos que la tarjeta pide (PDOL)
         val pdol = Tlv.find(fciNodes, 0x9F38)?.value
         val pdolData = pdol?.let { buildPdol(Tlv.parseDol(it)) } ?: ByteArray(0)
-        val gpoData = byteArrayOf(0x83, pdolData.size.toByte()) + pdolData
+        val gpoData = byteArrayOf(0x83.toByte(), pdolData.size.toByte()) + pdolData
         val gpo = transceive(
             byteArrayOf(0x80.toByte(), 0xA8.toByte(), 0x00, 0x00, gpoData.size.toByte()) + gpoData + byteArrayOf(0x00),
             "GET PROCESSING OPTIONS"

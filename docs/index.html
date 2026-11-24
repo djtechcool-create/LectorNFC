@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lector NFC</title>
+<style>
+  :root { --bg:#f6f7fb; --card:#fff; --text:#1b1f2a; --muted:#5b6475; --accent:#2f6bff; --border:#e3e6ee; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0f1218; --card:#181c25; --text:#eef1f6; --muted:#9aa3b5; --accent:#6b95ff; --border:#2a3040; } }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:48px 16px; }
+  h1 { font-size:2.2rem; margin:0 0 8px; }
+  .lead { color:var(--muted); font-size:1.1rem; margin:0 0 32px; }
+  .btn { display:inline-block; background:var(--accent); color:#fff; text-decoration:none; padding:16px 28px; border-radius:14px; font-weight:600; font-size:1.1rem; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 24px; margin-top:24px; }
+  h2 { font-size:1.15rem; margin:0 0 10px; }
+  ol, ul { margin:0; padding-left:22px; } li { margin:4px 0; }
+  .no { color:var(--muted); }
+  small { color:var(--muted); display:block; margin-top:12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>📡 Lector NFC</h1>
+  <p class="lead">App para Android que lee la información pública del chip de tarjetas bancarias contactless (estándar EMV). Proyecto escolar.</p>
+
+  <a class="btn" id="dl" href="#">⬇️ Descargar APK</a>
+  <small id="ver">Última versión compilada automáticamente en GitHub</small>
+
+  <div class="card">
+    <h2>Cómo instalar</h2>
+    <ol>
+      <li>Descarga el APK desde tu celular Android.</li>
+      <li>Ábrelo y permite “Instalar apps desconocidas” para tu navegador.</li>
+      <li>Activa el NFC en Ajustes.</li>
+      <li>Abre <b>Lector NFC</b> y acerca la tarjeta a la parte trasera del celular.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Qué muestra</h2>
+    <ul>
+      <li>Número de tarjeta, vencimiento y marca (Visa, Mastercard…)</li>
+      <li>Todas las etiquetas EMV del chip, decodificadas</li>
+      <li>Historial de transacciones (si la tarjeta lo tiene)</li>
+      <li>Los comandos APDU enviados y las respuestas del chip</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Qué <u>no</u> se puede leer</h2>
+    <ul class="no">
+      <li>CVV: está impreso en el plástico, no en el chip.</li>
+      <li>PIN y claves criptográficas: nunca salen del chip.</li>
+    </ul>
+  </div>
+</main>
+<script>
+  // Arma el enlace a partir de la URL de GitHub Pages: usuario.github.io/repositorio
+  const user = location.hostname.split('.')[0];
+  const repo = location.pathname.split('/').filter(Boolean)[0] || 'LectorNFC';
+  const base = `https://github.com/${user}/${repo}`;
+  document.getElementById('dl').href = `${base}/releases/latest/download/LectorNFC.apk`;
+  fetch(`https://api.github.com/repos/${user}/${repo}/releases/latest`)
+    .then(r => r.ok ? r.json() : null)
+    .then(j => { if (j) document.getElementById('ver').textContent = `Versión ${j.tag_name} · ${new Date(j.published_at).toLocaleDateString('es')}`; })
+    .catch(() => {});
+</script>
+</body>
+</html>
